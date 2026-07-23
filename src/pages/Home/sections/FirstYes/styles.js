@@ -53,6 +53,37 @@ const particleBurst = keyframes`
   }
 `;
 
+const flamePulse = keyframes`
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: rotate(0deg) scale(0.94);
+  }
+
+  35% {
+    opacity: 1;
+    transform: rotate(8deg) scale(1.08);
+  }
+
+  70% {
+    opacity: 0.82;
+    transform: rotate(-5deg) scale(1.02);
+  }
+`;
+
+const flameCounterPulse = keyframes`
+  0%,
+  100% {
+    opacity: 0.58;
+    transform: rotate(0deg) scale(1.04);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: rotate(-12deg) scale(1.16);
+  }
+`;
+
 export const SectionContainer = styled.section`
   position: relative;
 
@@ -197,29 +228,42 @@ export const Supernova = styled.div`
 
   &::before {
     position: absolute;
-    inset: 3%;
-
-    opacity: 0.42;
-    filter: saturate(0.75) brightness(0.7) contrast(0.95);
+    z-index: 0;
+    inset: -18%;
 
     border-radius: 50%;
 
     background: url(${nebulaSupernova}) center / cover no-repeat;
     content: "";
-    opacity: 0.48;
-    filter: saturate(0.8) brightness(0.78) contrast(0.95);
+
+    opacity: 0.78;
+    filter: saturate(1.12) brightness(0.82) contrast(1.08);
+
+    mix-blend-mode: screen;
+
+    -webkit-mask-image: radial-gradient(
+      circle,
+      #000 0 48%,
+      rgba(0, 0, 0, 0.94) 60%,
+      rgba(0, 0, 0, 0.68) 72%,
+      rgba(0, 0, 0, 0.28) 84%,
+      transparent 98%
+    );
 
     mask-image: radial-gradient(
       circle,
-      #000 30%,
-      rgba(0, 0, 0, 0.75) 52%,
-      rgba(0, 0, 0, 0.2) 68%,
-      transparent 80%
+      #000 0 48%,
+      rgba(0, 0, 0, 0.94) 60%,
+      rgba(0, 0, 0, 0.68) 72%,
+      rgba(0, 0, 0, 0.28) 84%,
+      transparent 98%
     );
+
+    pointer-events: none;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: min(82vw, 440px);
+    width: min(94vw, 480px);
   }
 `;
 
@@ -235,9 +279,9 @@ export const EnergySvg = styled.svg`
 export const EnergyRing = styled.circle`
   fill: none;
   stroke: ${({ theme }) => theme.colors.glow};
-  stroke-width: 1;
+  stroke-width: 1.6;
   stroke-dasharray: 8 14;
-  opacity: 0.42;
+  opacity: 0.68;
   transform-origin: center;
   animation: ${rotateEnergy} 24s linear infinite;
 
@@ -246,7 +290,7 @@ export const EnergyRing = styled.circle`
     css`
       stroke: ${({ theme }) => theme.colors.primary};
       stroke-dasharray: 4 10;
-      opacity: 0.55;
+      opacity: 0.72;
       animation: ${reverseEnergy} 18s linear infinite;
     `}
 
@@ -255,7 +299,7 @@ export const EnergyRing = styled.circle`
     css`
       stroke: ${({ theme }) => theme.colors.accent};
       stroke-dasharray: 2 8;
-      opacity: 0.48;
+      opacity: 0.76;
       animation: ${rotateEnergy} 12s linear infinite;
     `}
 `;
@@ -286,12 +330,14 @@ export const Particle = styled.span`
   animation-delay: ${({ $index }) => $index * 0.07}s;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    --distance: ${({ $index }) => 110 + ($index % 4) * 24}px;
+    --distance: ${({ $index }) => 135 + ($index % 4) * 28}px;
   }
 `;
 
 export const SupernovaCore = styled.div`
   position: absolute;
+  z-index: 2;
+  isolation: isolate;
   top: 50%;
   left: 50%;
 
@@ -312,11 +358,64 @@ export const SupernovaCore = styled.div`
     rgba(37, 99, 235, 0.5) 38%,
     rgba(3, 7, 18, 0.94) 72%
   );
+
   box-shadow:
     0 0 40px rgba(248, 250, 252, 0.28),
     0 0 90px rgba(56, 189, 248, 0.38),
     0 0 160px rgba(37, 99, 235, 0.24);
+
   transform: translate(-50%, -50%);
+
+  &::before,
+  &::after {
+    position: absolute;
+    z-index: -1;
+
+    border-radius: 50%;
+
+    content: "";
+    pointer-events: none;
+
+    mask-image: radial-gradient(
+      circle,
+      transparent 0 47%,
+      #000 56%,
+      rgba(0, 0, 0, 0.82) 66%,
+      transparent 79%
+    );
+  }
+
+  &::before {
+    inset: -32%;
+
+    background: repeating-conic-gradient(
+      from 12deg,
+      rgba(56, 189, 248, 0) 0deg 8deg,
+      rgba(56, 189, 248, 0.95) 12deg 18deg,
+      rgba(37, 99, 235, 0.28) 23deg 29deg,
+      rgba(163, 255, 18, 0.78) 33deg 37deg,
+      transparent 41deg 52deg
+    );
+
+    filter: blur(8px);
+    animation: ${flamePulse} 2.4s ease-in-out infinite;
+  }
+
+  &::after {
+    inset: -43%;
+
+    background: repeating-conic-gradient(
+      from -18deg,
+      transparent 0deg 14deg,
+      rgba(14, 165, 233, 0.7) 18deg 24deg,
+      transparent 29deg 38deg,
+      rgba(163, 255, 18, 0.46) 42deg 46deg,
+      transparent 50deg 64deg
+    );
+
+    filter: blur(13px);
+    animation: ${flameCounterPulse} 3.1s ease-in-out infinite;
+  }
 
   span {
     color: ${({ theme }) => theme.colors.text};

@@ -1,15 +1,12 @@
+import { HeroScene } from "./HeroScene";
 import {
   Accent,
   Actions,
-  CareerOrbit,
   Content,
   Eyebrow,
   HeroContainer,
   HeroDescription,
   HeroTitle,
-  OrbitCore,
-  OrbitLabel,
-  OrbitRing,
   PrimaryLink,
   SecondaryLink,
   Visual,
@@ -55,20 +52,7 @@ export function Hero() {
           ease: [0.22, 1, 0.36, 1],
         }}
       >
-        <CareerOrbit>
-          <OrbitRing />
-          <OrbitRing $secondary />
-
-          <OrbitCore>
-            <span>&lt;/&gt;</span>
-            <strong>DEV</strong>
-          </OrbitCore>
-
-          <OrbitLabel $position="top">Código</OrbitLabel>
-          <OrbitLabel $position="right">Projetos</OrbitLabel>
-          <OrbitLabel $position="bottom">Carreira</OrbitLabel>
-          <OrbitLabel $position="left">Comunidade</OrbitLabel>
-        </CareerOrbit>
+        <HeroScene />
       </Visual>
     </HeroContainer>
   );

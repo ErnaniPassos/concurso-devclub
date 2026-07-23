@@ -1,21 +1,15 @@
+import { FireballScene } from "./FireballScene";
 import {
   Accent,
   Content,
   Description,
-  EnergyRing,
-  EnergySvg,
   Eyebrow,
-  Particle,
-  Particles,
   PrimaryLink,
   SectionContainer,
   Supernova,
-  SupernovaCore,
   Title,
   Visual,
 } from "./styles";
-
-const particles = Array.from({ length: 16 }, (_, index) => index);
 
 export function FirstYes() {
   return (
@@ -54,22 +48,7 @@ export function FirstYes() {
         }}
       >
         <Supernova>
-          <EnergySvg viewBox="0 0 500 500">
-            <EnergyRing cx="250" cy="250" r="210" />
-            <EnergyRing cx="250" cy="250" r="165" $secondary />
-            <EnergyRing cx="250" cy="250" r="120" $tertiary />
-          </EnergySvg>
-
-          <Particles>
-            {particles.map((particle) => (
-              <Particle key={particle} $index={particle} />
-            ))}
-          </Particles>
-
-          <SupernovaCore>
-            <span>PRIMEIRO</span>
-            <strong>SIM</strong>
-          </SupernovaCore>
+          <FireballScene />
         </Supernova>
       </Visual>
     </SectionContainer>
